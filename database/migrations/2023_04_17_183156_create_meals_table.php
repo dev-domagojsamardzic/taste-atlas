@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('meals', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description', 1024)->nullable();
+            $table->text('description')->nullable();
             $table->enum('status',['created', 'deleted'])->default('created');
             $table->timestamps();
         });
