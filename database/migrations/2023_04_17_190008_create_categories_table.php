@@ -13,9 +13,13 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('slug');
+            $table->string('title')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
+        });
+
+        Schema::table('meals', function (Blueprint $table) {
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');
         });
     }
 

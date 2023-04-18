@@ -11,6 +11,6 @@ class MealTranslation extends Model
 
     protected $table = 'meal_translations';
 
-    protected $timestamps = false;
+    public $timestamps = false;
     protected $fillable = ['title', 'description'];
 }

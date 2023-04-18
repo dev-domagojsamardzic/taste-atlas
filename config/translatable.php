@@ -11,6 +11,7 @@ return [
     |
     */
     'locales' => [
+        'hr',
         'en',
         'fr',
         'de'
@@ -40,7 +41,7 @@ return [
     | and never fallback to the translator one.
     |
     */
-    'locale' => 'en',
+    'locale' => 'hr',
 
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +54,7 @@ return [
     | $useTranslationFallback when defined
     |
     */
-    'use_fallback' => false,
+    'use_fallback' => true,
 
     /*
     |--------------------------------------------------------------------------
