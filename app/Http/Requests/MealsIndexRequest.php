@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\CategoryParameter;
 use App\Rules\LanguageParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -35,8 +36,9 @@ class MealsIndexRequest extends FormRequest
         return [
             'lang' => ['required', new LanguageParameter],
             'per_page' => ['nullable', 'integer', 'min:1'],
-            'page' => 'nullable|integer|min:1',
-            'category' => 'nullable|integer|exists:categories,id',
+            'page' => ['nullable', 'integer', 'min:1'],
+            'category' => ['nullable', new CategoryParameter],
+
             'tags' => 'nullable|exists:tags,id',
             'tags.*' => 'integer',
             'with' => 'nullable',
@@ -67,15 +69,10 @@ class MealsIndexRequest extends FormRequest
         // Customize validation messages
         return [
             'lang.required' => 'The langauge parameter is required.',
-
-
-
             'per_page.integer' => 'The per_page value must be an integer.',
             'per_page.min' => 'The per_page value must be at least 1.',
             'page.integer' => 'The page value must be an integer.',
             'page.min' => 'The page value must be at least 1.',
-            'category.integer' => 'The category value must be an integer.',
-            'category.exists' => 'The entered category is invalid.',
             'tags.*.integer' => 'Each tag must be an integer.',
             'with.*.in' => 'The selected :attribute is invalid.',
 
