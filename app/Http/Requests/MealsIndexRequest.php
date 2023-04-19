@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\CategoryParameter;
 use App\Rules\LanguageParameter;
+use App\Rules\TagsParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
@@ -34,16 +35,14 @@ class MealsIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'lang' => ['required', new LanguageParameter],
-            'per_page' => ['nullable', 'integer', 'min:1'],
-            'page' => ['nullable', 'integer', 'min:1'],
-            'category' => ['nullable', new CategoryParameter],
-
-            'tags' => 'nullable|exists:tags,id',
-            'tags.*' => 'integer',
-            'with' => 'nullable',
-            'with.*' => 'in:ingredients,category,tags',
-            'diff_time' => 'nullable|integer|min:1',
+            'lang' => [ 'required', new LanguageParameter ],
+            'per_page' => [ 'nullable', 'integer', 'min:1' ],
+            'page' => [ 'nullable', 'integer', 'min:1' ],
+            'category' => [ new CategoryParameter ],
+            'tags' => [ new TagsParameter ],
+            'with' => [ 'nullable', 'in:ingredients,category,tags' ],
+            'with.*' => [ 'in:ingredients,category,tags' ],
+            'diff_time' => [ 'nullable', 'integer', 'min:1'],
         ];
     }
 
@@ -73,11 +72,10 @@ class MealsIndexRequest extends FormRequest
             'per_page.min' => 'The per_page value must be at least 1.',
             'page.integer' => 'The page value must be an integer.',
             'page.min' => 'The page value must be at least 1.',
-            'tags.*.integer' => 'Each tag must be an integer.',
-            'with.*.in' => 'The selected :attribute is invalid.',
-
-            'diff_time.integer' => 'The difference time value must be an integer.',
-            'diff_time.min' => 'The difference time value must be at least 1.'
+            'with.in' => 'The entered :attribute attribute is invalid. Valid values are: ingredients,category and tags.',
+            'with.*.in' => 'The entered :attribute attribute is invalid. Valid values are: ingredients,category and tags.',
+            'diff_time.integer' => 'The entered :attribute attribute value must be an integer.',
+            'diff_time.min' => 'The entered :attribute attribute value must be at least 1.'
         ];
     }
 

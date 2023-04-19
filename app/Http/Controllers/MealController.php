@@ -27,7 +27,7 @@ class MealController extends Controller
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
         $category = $request->input('category');
-        $tags = $request->input('tags');
+        $tags = ( $request->has('tags') ) ? explode(',', $request->input('tags') ) : [];
         $with = ($request->has('with')) ? explode(',', $request->input('with')) : [];
         $lang = $request->input('lang');
         $diffTime = $request->input('diff_time');

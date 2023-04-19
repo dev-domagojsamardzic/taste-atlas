@@ -15,6 +15,11 @@ class CategoryParameter implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if($value == null) {
+            $fail('The :attribute attribute cannot be empty.');
+            return;
+        }
+
         // Check if the value is NULL or !NULL
         if ($value === 'NULL' || $value === '!NULL') {
             return;
