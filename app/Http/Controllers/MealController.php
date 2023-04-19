@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Meal;
 use App\Repositories\MealRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use App\Http\Requests\MealsIndexRequest;
 use App\Http\Resources\MealResource;
-use Illuminate\Support\Facades\App;
 
 class MealController extends Controller
 {
 
-    private $repository;
+    private $mealRepository;
 
     public function __construct(MealRepository $mealRepository)
     {
-        $this->repository = $mealRepository;
+        $this->mealRepository = $mealRepository;
     }
 
     /**
@@ -26,18 +23,9 @@ class MealController extends Controller
     public function index(MealsIndexRequest $request)
     {
         // Transform results
-        $results = $this->repository->filterMeals($request);
+        $meals = $this->mealRepository->filterMeals($request);
 
-        return MealResource::collection($results)->additional(['meta' => [
-            'total' => $results->total(),
-            'per_page' => $results->perPage(),
-            'current_page' => $results->currentPage(),
-            'last_page' => $results->lastPage(),
-            'from' => $results->firstItem(),
-            'to' => $results->lastItem(),
-        ]])
-        ->response()
-        ->setStatusCode(200);
+        return MealResource::collection($meals)->response()->setStatusCode(200);
     }
 
     /**

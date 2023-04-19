@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Requests\MealsIndexRequest;
 use App\Models\Meal;
+use Illuminate\Support\Carbon;
 
 class MealRepository extends ModelRepository {
 
@@ -17,13 +18,13 @@ class MealRepository extends ModelRepository {
     }
 
     public function filterMeals(MealsIndexRequest $request) {
+
         // Retrieve query parameters
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
         $category = $request->input('category');
         $tags = ( $request->has('tags') ) ? explode(',', $request->input('tags') ) : [];
         $with = ($request->has('with')) ? explode(',', $request->input('with')) : [];
-        $lang = $request->input('lang');
         $diffTime = $request->input('diff_time');
 
         // Build query

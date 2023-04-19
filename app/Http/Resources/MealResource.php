@@ -14,7 +14,6 @@ class MealResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        // $request->has('with')  &&
         return [
             'id' => $this->id,
             'title' => $this->translate($request->lang)->title,
