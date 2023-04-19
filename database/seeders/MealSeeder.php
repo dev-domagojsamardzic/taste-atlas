@@ -32,7 +32,7 @@ class MealSeeder extends Seeder
             }
 
             $meal->category_id = $faker->optional()->randomElement(Category::pluck('id')->toArray());
-            $meal->status = Arr::random([MealStatusEnum::CREATED, MealStatusEnum::DELETED]);
+            $meal->status = Arr::random([MealStatusEnum::CREATED, MealStatusEnum::MODIFIED, MealStatusEnum::DELETED]);
             $meal->save();
 
             $meal->tags()->attach(Tag::inRandomOrder()->limit($faker->numberBetween(1, 5))->pluck('id')->toArray());
