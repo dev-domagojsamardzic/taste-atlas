@@ -7,6 +7,8 @@ use App\Repositories\MealRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Requests\MealsIndexRequest;
+use App\Http\Resources\MealResource;
+use Illuminate\Support\Facades\App;
 
 class MealController extends Controller
 {
@@ -23,60 +25,19 @@ class MealController extends Controller
      */
     public function index(MealsIndexRequest $request)
     {
-        // Retrieve query parameters
-        $perPage = $request->input('per_page', 10);
-        $page = $request->input('page', 1);
-        $category = $request->input('category');
-        $tags = ( $request->has('tags') ) ? explode(',', $request->input('tags') ) : [];
-        $with = ($request->has('with')) ? explode(',', $request->input('with')) : [];
-        $lang = $request->input('lang');
-        $diffTime = $request->input('diff_time');
-
-        // Build query
-        $query = Meal::query()->translatedIn($lang);
-        // Filter by category
-        if ($category === null) {
-            $query->whereNull('category_id');
-        } elseif ($category === '!NULL') {
-            $query->whereNotNull('category_id');
-        } else {
-            $query->where('category_id', $category);
-        }
-
-        // Filter by tags
-        if (!empty($tags)) {
-            foreach ($tags as $tag) {
-                $query->whereHas('tags', function ($query) use ($tag) {
-                    $query->where('id', $tag);
-                });
-            }
-        }
-
-        // Filter by diff_time
-        if ($diffTime !== null) {
-            $deletedAtColumn = (new Meal())->getDeletedAtColumn();
-            $query->withTrashed()->where(function ($query) use ($diffTime, $deletedAtColumn) {
-                $query->where('created_at', '>', Carbon::createFromTimestamp($diffTime))
-                    ->orWhere('updated_at', '>', Carbon::createFromTimestamp($diffTime))
-                    ->orWhere($deletedAtColumn, '>', Carbon::createFromTimestamp($diffTime));
-            });
-        }
-
-        // Eager load related models
-        if (in_array('ingredients', $with)) {
-            $query->with('ingredients.translations');
-        }
-        if (in_array('category', $with)) {
-            $query->with('category.translations');
-        }
-        if (in_array('tags', $with)) {
-            $query->with('tags.translations');
-        }
-
-        // Paginate results
-        $results = $query->paginate($perPage, ['*'], 'page', $page);
         // Transform results
-        return response()->json($results,200);
+        $results = $this->repository->filterMeals($request);
+
+        return MealResource::collection($results)->additional(['meta' => [
+            'total' => $results->total(),
+            'per_page' => $results->perPage(),
+            'current_page' => $results->currentPage(),
+            'last_page' => $results->lastPage(),
+            'from' => $results->firstItem(),
+            'to' => $results->lastItem(),
+        ]])
+        ->response()
+        ->setStatusCode(200);
     }
 
     /**

@@ -14,13 +14,4 @@ class Ingredient extends Model implements TranslatableContract
 
     public $translatedAttributes = ['title'];
     protected $fillable = ['title'];
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($category) {
-            $category->slug = 'tag-' . Str::uuid();
-        });
-    }
 }

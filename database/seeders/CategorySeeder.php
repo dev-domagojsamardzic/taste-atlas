@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
@@ -21,9 +22,9 @@ class CategorySeeder extends Seeder
             $category = new Category();
 
             foreach (config('translatable.locales') as $locale) {
-                $category->translateOrNew($locale)->title = $faker->word;
+                $category->translateOrNew($locale)->title = strtoupper($locale) . '_' . $faker->word;
             }
-
+            $category->slug = 'category-' . Str::uuid();
             $category->save();
         }
     }

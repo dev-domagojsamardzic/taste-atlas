@@ -6,6 +6,7 @@ use App\Models\Tag;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
 
 class TagSeeder extends Seeder
 {
@@ -21,9 +22,10 @@ class TagSeeder extends Seeder
             $tag = new Tag();
 
             foreach (config('translatable.locales') as $locale) {
-                $tag->translateOrNew($locale)->title = $faker->word;
+                $tag->translateOrNew($locale)->title = strtoupper($locale) . '_' . $faker->word;
             }
 
+            $tag->slug = 'tag-' . Str::uuid();
             $tag->save();
         }
     }

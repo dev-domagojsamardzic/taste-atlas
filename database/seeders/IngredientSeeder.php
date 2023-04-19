@@ -6,6 +6,7 @@ use App\Models\Ingredient;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Faker\Factory as Faker;
+use Illuminate\Support\Str;
 
 class IngredientSeeder extends Seeder
 {
@@ -21,9 +22,10 @@ class IngredientSeeder extends Seeder
             $ingredient = new Ingredient();
 
             foreach (config('translatable.locales') as $locale) {
-                $ingredient->translateOrNew($locale)->title = $faker->word;
+                $ingredient->translateOrNew($locale)->title = strtoupper($locale) . '_' . $faker->word;
             }
 
+            $ingredient->slug = 'tag-' . Str::uuid();
             $ingredient->save();
         }
     }
