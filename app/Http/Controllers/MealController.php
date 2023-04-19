@@ -3,16 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Meal;
+use App\Repositories\MealRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Arr;
+use App\Http\Requests\MealsIndexRequest;
 
 class MealController extends Controller
 {
+
+    private $repository;
+
+    public function __construct(MealRepository $mealRepository)
+    {
+        $this->repository = $mealRepository;
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(MealsIndexRequest $request)
     {
             // Retrieve query parameters
         $perPage = $request->input('per_page', 10);

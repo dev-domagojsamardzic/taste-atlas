@@ -2,18 +2,27 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\LanguageParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
 
 class MealsIndexRequest extends FormRequest
 {
+    /**
+     * Indicates if the validator should stop on the first rule failure.
+     *
+     * @var bool
+     */
+    protected $stopOnFirstFailure = true;
+
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,15 +33,54 @@ class MealsIndexRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'per_page' => 'nullable|integer|min:1',
+            'lang' => ['required', new LanguageParameter],
+            'per_page' => ['nullable', 'integer', 'min:1'],
             'page' => 'nullable|integer|min:1',
-            'category' => 'nullable|integer',
-            'tags' => 'nullable|array',
+            'category' => 'nullable|integer|exists:categories,id',
+            'tags' => 'nullable|exists:tags,id',
             'tags.*' => 'integer',
-            'with' => 'nullable|array',
+            'with' => 'nullable',
             'with.*' => 'in:ingredients,category,tags',
-            'lang' => 'required',
             'diff_time' => 'nullable|integer|min:1',
+        ];
+    }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        // Customize validation messages
+        return [
+            'lang.required' => 'The langauge parameter is required.',
+
+
+
+            'per_page.integer' => 'The per_page value must be an integer.',
+            'per_page.min' => 'The per_page value must be at least 1.',
+            'page.integer' => 'The page value must be an integer.',
+            'page.min' => 'The page value must be at least 1.',
+            'category.integer' => 'The category value must be an integer.',
+            'category.exists' => 'The entered category is invalid.',
+            'tags.*.integer' => 'Each tag must be an integer.',
+            'with.*.in' => 'The selected :attribute is invalid.',
+
+            'diff_time.integer' => 'The difference time value must be an integer.',
+            'diff_time.min' => 'The difference time value must be at least 1.'
         ];
     }
 
@@ -44,12 +92,16 @@ class MealsIndexRequest extends FormRequest
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    protected function failedValidation(Validator $validator)
+    protected function failedValidation(Validator $validator): HttpResponseException
     {
+        throw new ValidationException($validator, response()->json([
+            'errors' => $validator->errors()
+        ],422));
+
         throw new HttpResponseException(
             response()->json(
                 [
-                    'error' => $validator->errors()->first(),
+                    'errors' => $validator->errors()->first(),
                     'status_code' => 422,
                 ],
                 422,
