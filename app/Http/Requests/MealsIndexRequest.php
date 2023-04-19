@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\CategoryParameter;
 use App\Rules\LanguageParameter;
 use App\Rules\TagsParameter;
+use App\Rules\WithParameter;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
@@ -40,8 +41,7 @@ class MealsIndexRequest extends FormRequest
             'page' => [ 'nullable', 'integer', 'min:1' ],
             'category' => [ new CategoryParameter ],
             'tags' => [ new TagsParameter ],
-            'with' => [ 'nullable', 'in:ingredients,category,tags' ],
-            'with.*' => [ 'in:ingredients,category,tags' ],
+            'with' => [ 'nullable', new WithParameter ],
             'diff_time' => [ 'nullable', 'integer', 'min:1'],
         ];
     }

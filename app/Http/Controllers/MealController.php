@@ -23,7 +23,7 @@ class MealController extends Controller
      */
     public function index(MealsIndexRequest $request)
     {
-            // Retrieve query parameters
+        // Retrieve query parameters
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
         $category = $request->input('category');
