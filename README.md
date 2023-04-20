@@ -15,6 +15,7 @@ The params are:
 -   **diff_time**   (optional)  => e.g. diff_time={timestamp}
 
 Here is the example of query string:
+
 `.../meals?per_page=5&tags=2&lang=hr&with=ingredients,category,tags&diff_time=1493902343&page=2`
 
 ## Tech stack:
