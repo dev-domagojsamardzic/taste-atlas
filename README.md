@@ -31,7 +31,9 @@ Here is the [link](https://github.com/dev-domagojsamardzic/taste-atlas) to the p
 
 1. Clone the project into local repository. In my case, name of the repository is `taste-atlas`
 
-`git clone git@github.com:dev-domagojsamardzic/taste-atlas.git taste-atlas`
+```
+git clone git@github.com:dev-domagojsamardzic/taste-atlas.git taste-atlas
+```
 
 `cd taste-atlas`
 
