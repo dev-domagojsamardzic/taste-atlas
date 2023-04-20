@@ -90,17 +90,8 @@ class MealsIndexRequest extends FormRequest
     protected function failedValidation(Validator $validator): HttpResponseException
     {
         throw new ValidationException($validator, response()->json([
+            'status_code' => 422,
             'errors' => $validator->errors()
-        ],422));
-
-        throw new HttpResponseException(
-            response()->json(
-                [
-                    'errors' => $validator->errors()->first(),
-                    'status_code' => 422,
-                ],
-                422,
-            ),
-        );
+        ], 422));
     }
 }
