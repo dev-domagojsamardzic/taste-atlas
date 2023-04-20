@@ -20,7 +20,7 @@ class CategoryParameter implements ValidationRule
             return;
         }
 
-        // Check if the value is NULL or !NULL
+        // Check if the value is 'NULL' or '!NULL'
         if ($value === 'NULL' || $value === '!NULL') {
             return;
         }

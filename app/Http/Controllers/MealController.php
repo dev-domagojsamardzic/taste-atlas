@@ -31,7 +31,7 @@ class MealController extends Controller
      */
     public function index(MealsIndexRequest $request): JsonResponse
     {
-        // Transform results
+        // Fiter results by query params results
         $meals = $this->mealRepository->filterMeals($request);
 
         return MealResource::collection($meals)->response()->setStatusCode(200);

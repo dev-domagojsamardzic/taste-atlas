@@ -23,7 +23,9 @@ abstract class ModelRepository {
      */
     public function __construct(Application $app)
     {
+        // App instance
         $this->app = $app;
+        // Model instance
         $this->makeModel();
     }
 

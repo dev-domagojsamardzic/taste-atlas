@@ -25,16 +25,17 @@ class MealRepository extends ModelRepository {
      * @param App\Http\Requests\MealsIndexRequest $request
      * @return Illuminate\Pagination\LengthAwarePaginator
     */
-    public function filterMeals(MealsIndexRequest $request): LengthAwarePaginator {
-
+    public function filterMeals(MealsIndexRequest $request): LengthAwarePaginator
+    {
         // Retrieve query parameters
         $perPage = $request->input('per_page', 10);
         $page = $request->input('page', 1);
 
         // Apply scope (app\Traits\Filterable)
+        // Check app/Filter.php & app/MealsFilter.php
         $query = $this->model->filter(new MealsFilter($request));
 
-        // Paginate result, keep query string
+        // Paginate result, keep query string for previous & next links
         $results = $query->paginate($perPage, ['*'], 'page', $page)->withQueryString();
 
         return $results;

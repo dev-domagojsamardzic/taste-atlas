@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Enums\MealStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
@@ -12,26 +11,31 @@ use App\Models\Tag;
 use App\Models\Ingredient;
 use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Meal extends Model implements TranslatableContract
 {
     use HasFactory, Translatable, SoftDeletes, Filterable;
 
+    /**
+     * Translatable attributes
+    */
     public $translatedAttributes = ['title', 'description'];
 
     protected $guarded = [];
 
-    public function category()
+    public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
 
-    public function ingredients()
+    public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Ingredient::class);
     }
