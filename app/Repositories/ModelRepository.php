@@ -34,7 +34,7 @@ abstract class ModelRepository {
      *
      * @return string
      */
-    abstract public function model();
+    abstract public function setModelName();
 
     /**
      * Make Model instance
@@ -45,10 +45,10 @@ abstract class ModelRepository {
      */
     public function makeModel()
     {
-        $model = $this->app->make($this->model());
+        $model = $this->app->make($this->setModelName());
 
         if (!$model instanceof Model) {
-            throw new \Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
+            throw new \Exception("Class {$this->setModelName()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
         return $this->model = $model;

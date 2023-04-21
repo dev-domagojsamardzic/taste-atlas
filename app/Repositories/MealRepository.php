@@ -14,7 +14,7 @@ class MealRepository extends ModelRepository {
      * ------------------------------
      * @return string
     */
-    public function model(): string
+    public function setModelName(): string
     {
         return Meal::class;
     }
