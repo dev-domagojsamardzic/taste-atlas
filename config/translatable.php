@@ -10,7 +10,7 @@ return [
     | Contains an array with the applications available locales.
     |
     */
-    'locales' => [],
+    'locales' => [ config('app.locale') ],
 
     /*
     |--------------------------------------------------------------------------

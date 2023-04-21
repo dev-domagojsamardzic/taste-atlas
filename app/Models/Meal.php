@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\MealStatusEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Astrotomic\Translatable\Contracts\Translatable as TranslatableContract;
@@ -13,6 +14,7 @@ use App\Traits\Filterable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Builder;
 
 class Meal extends Model implements TranslatableContract
 {
@@ -38,5 +40,16 @@ class Meal extends Model implements TranslatableContract
     public function ingredients(): BelongsToMany
     {
         return $this->belongsToMany(Ingredient::class);
+    }
+
+    /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        // Global scope that will display only 'created' meals
+        static::addGlobalScope('created', function (Builder $builder) {
+            $builder->where('status', MealStatusEnum::CREATED);
+        });
     }
 }

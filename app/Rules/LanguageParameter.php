@@ -18,7 +18,7 @@ class LanguageParameter implements ValidationRule
         $locales = Language::pluck('code')->toArray();
 
         if (!in_array($value, $locales)) {
-            $fail('The :attribute must be a valid language. Allowed language codes are: '. implode(',', config('translatable.locales')));
+            $fail('The :attribute must be a valid language. Allowed language codes are: '. implode(',', $locales));
         }
     }
 }

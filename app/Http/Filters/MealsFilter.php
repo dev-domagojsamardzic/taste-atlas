@@ -2,6 +2,7 @@
 
 namespace App\Http\Filters;
 
+use App\Enums\MealStatusEnum;
 use Illuminate\Support\Carbon;
 
 class MealsFilter extends Filter
@@ -39,7 +40,7 @@ class MealsFilter extends Filter
     */
     protected function setProperties(): void
     {
-
+        // Retrieve properties from query string
         $this->category = $this->request->input('category');
         $this->tags = ( $this->request->has('tags') ) ? explode(',', $this->request->input('tags') ) : [];
         $this->with = ($this->request->has('with')) ? explode(',', $this->request->input('with')) : [];
@@ -82,7 +83,7 @@ class MealsFilter extends Filter
     public function diff_time(): void {
         // Filter by diff_time
         if ($this->diffTime !== null) {
-            $this->builder->withTrashed()->where(function ($query) {
+            $this->builder->withoutGlobalScopes()->where(function ($query) {
                 $query->where('created_at', '>', Carbon::createFromTimestamp($this->diffTime))
                     ->orWhere('updated_at', '>', Carbon::createFromTimestamp($this->diffTime))
                     ->orWhere('deleted_at', '>', Carbon::createFromTimestamp($this->diffTime));

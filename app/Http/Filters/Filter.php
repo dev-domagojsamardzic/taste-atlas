@@ -45,6 +45,8 @@ abstract class Filter {
     {
         $this->builder = $builder;
 
+        // Execute every function whose name exist as query string param
+        // Meaning: function names and query string params must match names!
         foreach ($this->request->all() as $name => $value) {
             if (method_exists($this, $name)) {
                 call_user_func_array([$this, $name], array_filter([$value]));
