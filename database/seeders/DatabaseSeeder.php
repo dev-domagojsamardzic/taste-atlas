@@ -18,16 +18,11 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
+            LanguageSeeder::class,
             CategorySeeder::class,
             TagSeeder::class,
             IngredientSeeder::class,
             MealSeeder::class
         ]);
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
