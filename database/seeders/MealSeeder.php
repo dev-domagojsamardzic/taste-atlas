@@ -11,6 +11,7 @@ use App\Models\Tag;
 use Faker\Factory as Faker;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use App\Models\Language;
 
 class MealSeeder extends Seeder
 {
@@ -24,13 +25,14 @@ class MealSeeder extends Seeder
         $faker = Faker::create();
 
         $possibleCategories = Category::pluck('id')->toArray();
+        $locales = Language::pluck('code')->toArray();
 
         for ($i = 0; $i < 50; $i++) {
 
             $meal = new Meal();
 
             // Translate to available locales
-            foreach (config('translatable.locales') as $locale) {
+            foreach ($locales as $locale) {
                 $meal->translateOrNew($locale)->title = strtoupper($locale) . '_' . $faker->sentence();
                 $meal->translateOrNew($locale)->description = strtoupper($locale) . '_' .$faker->paragraph();
             }

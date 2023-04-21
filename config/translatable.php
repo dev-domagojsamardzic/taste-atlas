@@ -10,12 +10,7 @@ return [
     | Contains an array with the applications available locales.
     |
     */
-    'locales' => [
-        'hr',
-        'en',
-        'fr',
-        'de'
-    ],
+    'locales' => [],
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +36,7 @@ return [
     | and never fallback to the translator one.
     |
     */
-    'locale' => 'hr',
+    'locale' => config('app.locale'),
 
     /*
     |--------------------------------------------------------------------------
