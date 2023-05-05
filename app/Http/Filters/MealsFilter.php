@@ -52,7 +52,7 @@ class MealsFilter extends Filter
     */
     public function category(): void {
 
-        if ($this->category === null) {
+        if ($this->category === 'NULL') {
             $this->builder->whereNull('category_id');
         }
         elseif ($this->category === '!NULL') {
