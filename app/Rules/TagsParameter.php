@@ -25,7 +25,6 @@ class TagsParameter implements ValidationRule
         $tagIdArray = DB::table('tags')->pluck('id')->toArray();
 
         // Check if the value is a single number
-
         if (preg_match('/^\d+$/', $value)) {
 
             if (!in_array($value, $tagIdArray)) {
