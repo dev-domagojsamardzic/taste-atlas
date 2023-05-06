@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Interfaces\ModelRepositoryInterface;
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 abstract class ModelRepository implements ModelRepositoryInterface {
 
@@ -37,6 +38,16 @@ abstract class ModelRepository implements ModelRepositoryInterface {
      * @return string
      */
     abstract protected function setModelName();
+
+    /**
+     * Returns an instance of the query builder for the specified model
+     *
+     * @return Illuminate\Database\Eloquent\Builder
+     */
+    public function baseModelQuery(): Builder
+    {
+        return $this->model::query();
+    }
 
     /**
      * Make Model instance
