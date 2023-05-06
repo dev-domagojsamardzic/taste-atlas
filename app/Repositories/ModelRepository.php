@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Repositories;
+
+use App\Interfaces\ModelRepositoryInterface;
 use Illuminate\Container\Container as Application;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class ModelRepository {
+abstract class ModelRepository implements ModelRepositoryInterface {
 
     /**
      * @var Model
@@ -26,7 +28,7 @@ abstract class ModelRepository {
         // App instance
         $this->app = $app;
         // Model instance
-        $this->makeModel();
+        $this->getModel();
     }
 
     /**
@@ -34,7 +36,7 @@ abstract class ModelRepository {
      *
      * @return string
      */
-    abstract public function setModelName();
+    abstract protected function setModelName();
 
     /**
      * Make Model instance
@@ -43,7 +45,7 @@ abstract class ModelRepository {
      *
      * @return Model
      */
-    public function makeModel()
+    public function getModel(): Model
     {
         $model = $this->app->make($this->setModelName());
 

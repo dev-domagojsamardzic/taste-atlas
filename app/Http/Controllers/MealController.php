@@ -29,8 +29,19 @@ class MealController extends Controller
      */
     public function index(MealsIndexRequest $request)
     {
+        // Define model relationships
+        $relationships = [ 
+            'translations',
+            'category',
+            'category.translations',
+            'tags',
+            'tags.translations',
+            'ingredients',
+            'ingredients.translations'
+        ];
+
         // Fiter results by query params results
-        $meals = $this->mealRepository->filterMeals($request);
+        $meals = $this->mealRepository->filterMeals($request, $relationships);
 
         // return MealCollection as response
         return MealCollection::make($meals)->response()->setStatusCode(200);
