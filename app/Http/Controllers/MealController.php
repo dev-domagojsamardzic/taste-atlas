@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Repositories\MealRepository;
-use Illuminate\Http\Request;
 use App\Http\Requests\MealsIndexRequest;
-use App\Http\Resources\MealResource;
-use Illuminate\Http\JsonResponse;
+use App\Http\Resources\MealCollection;
 
 class MealController extends Controller
 {
@@ -29,11 +27,12 @@ class MealController extends Controller
      * @param App\Http\Requests\MealsIndexRequest $request
      * @return Illuminate\Http\JsonResponse
      */
-    public function index(MealsIndexRequest $request): JsonResponse
+    public function index(MealsIndexRequest $request)
     {
         // Fiter results by query params results
         $meals = $this->mealRepository->filterMeals($request);
 
-        return MealResource::collection($meals)->response()->setStatusCode(200);
+        // return MealCollection as response
+        return MealCollection::make($meals)->response()->setStatusCode(200);
     }
 }
