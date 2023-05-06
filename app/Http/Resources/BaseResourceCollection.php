@@ -30,7 +30,7 @@ class BaseResourceCollection extends ResourceCollection
         $default['links'] = [
             'prev' => $default['links']['prev'],
             'next' => $default['links']['next'],
-            'self' => url()->full()
+            'self' => $request->fullUrl()
         ];
     
         return $default;
